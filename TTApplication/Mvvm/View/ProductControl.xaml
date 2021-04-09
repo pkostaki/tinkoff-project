@@ -1,0 +1,75 @@
+﻿<list:PanelItemPresentationAbstract
+    x:Class="TTApplication.Mvvm.View.ProductControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:list="using:TTApplication.Mvvm.View.Common.List"
+    xmlns:local="using:Extensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:TTApplication.Mvvm.ViewModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="OnLoaded"
+    mc:Ignorable="d">
+
+    <RelativePanel x:Name="RelativePanel" Height="197">
+        <ItemsControl
+            x:Name="Benefits"
+            Width="282"
+            Margin="15"
+            HorizontalAlignment="Left"
+            ItemsSource="{x:Bind ViewModel.Benefits}">
+            <ItemsControl.RenderTransform>
+                <TranslateTransform x:Name="BenefitsTransform" />
+            </ItemsControl.RenderTransform>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="viewModel:BenefitViewModel">
+                    <TextBlock
+                        Margin="5"
+                        Foreground="White"
+                        Text="{x:Bind Text}"
+                        TextWrapping="WrapWholeWords" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Image
+            x:Name="Image"
+            MinWidth="282"
+            MinHeight="177"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            x:DeferLoadStrategy="Lazy"
+            SizeChanged="Image_OnSizeChanged"
+            Stretch="None">
+            <interactivity:Interaction.Behaviors>
+                <local:ImageProgressLoadingBehaviour />
+            </interactivity:Interaction.Behaviors>
+            <Image.RenderTransform>
+                <TranslateTransform x:Name="PictureTransform" />
+            </Image.RenderTransform>
+            <Image.Source>
+                <BitmapImage
+                    DecodePixelHeight="177"
+                    DecodePixelType="Logical"
+                    DecodePixelWidth="282"
+                    UriSource="{x:Bind ViewModel.LogoUri}" />
+            </Image.Source>
+        </Image>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="VerticalLayout">
+                    <VisualState.Setters>
+                        <Setter Target="Image.(RelativePanel.AlignTopWithPanel)" Value="true" />
+                        <Setter Target="Image.(RelativePanel.AlignHorizontalCenterWithPanel)" Value="true" />
+                        <Setter Target="Benefits.(RelativePanel.AlignHorizontalCenterWithPanel)" Value="true" />
+                        <Setter Target="Benefits.(RelativePanel.Below)" Value="Image" />
+                        <Setter Target="RelativePanel.Height" Value="400" />
+                        <Setter Target="RelativePanel.Width" Value="320" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="DefaultLayout" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </RelativePanel>
+</list:PanelItemPresentationAbstract>
